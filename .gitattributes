@@ -2,5 +2,4 @@ models_saved/GBClassifier_model.joblib filter=lfs diff=lfs merge=lfs -text
 models_saved/KNeighborsClassifier_model.joblib filter=lfs diff=lfs merge=lfs -text
 models_saved/LGBMClassifier_model.joblib filter=lfs diff=lfs merge=lfs -text
 models_saved/best_estimator_ada_model.joblib filter=lfs diff=lfs merge=lfs -text
-models_saved/lazy_classifier.joblib filter=lfs diff=lfs merge=lfs -text
-models_saved/logistic_regression_model.joblib filter=lfs diff=lfs merge=lfs -text
+models_saved/extra_tree_classifier_model.joblib filter=lfs diff=lfs merge=lfs -text
