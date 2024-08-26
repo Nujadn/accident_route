@@ -6,30 +6,49 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from pathlib import Path
 
 # librairie pour afficher toutes les colonnes du dataframe
 pd.set_option('display.max_columns', None)
 pd.options.display.max_info_columns
 
+#  décorateur @st.cache_data permet de garder en cache les données chargées, même quand l’application, donc le code, est mise à jour
+@st.cache_data 
+def load_data1():
+   return pd.read_csv("dataset/dataset_analyse.csv")
 
-df_ana = pd.read_csv("dataset/dataset_analyse.csv")
-
-df_prepro = pd.read_csv("dataset/dataset_to_prepro.csv")
-
-df_model = pd.read_csv("dataset/dataset_final.csv")
+@st.cache_data 
+def load_data2():
+   return pd.read_csv("dataset/dataset_to_prepro.csv")
+ 
+@st.cache_data 
+def load_data3():
+   return pd.read_csv("dataset/dataset_final.csv") 
+ 
+df_ana = load_data1()
+df_prepro = load_data2()
+df_model = load_data3()
 
 
 st.title("Projet de prédiction de la gravité des accidents")
 st.sidebar.title("Sommaire")
-pages=["Contexte", "Exploration", "DataVizualization", "Modélisation"]
+pages=["Contexte", "Le jeu de données", "Exploration", "DataVizualization", "Modélisation"]
 page=st.sidebar.radio("Aller vers", pages)
 
 # contexte
 if page == pages[0] : 
   st.write("### Introduction")
- 
-# Exploration  
+  st.write('Le projet « Accidents routiers en France » s’inscrit dans le cadre du cursus Datascientist, formation continue proposée par l’école Datascientest.')
+  st.write("L’objectif de ce projet est de prédire la gravité des accidents routiers en France. Les prédictions seront basées sur les données historiques, à partir des données disponibles sur [data.gouv.fr/](https://www.data.gouv.fr/fr/datasets/bases-de-donnees-annuelles-des-accidents-corporels-de-la-circulation-routiere-annees-de-2005-a-2022/).")
+  st.write("La première étape est d’étudier et appliquer des méthodes pour nettoyer le jeu de données. La deuxième étape est de créer un modèle prédictif. Une fois l’entraînement du modèle effectué, nous allons comparer notre modèle avec les données. ")
+
+# Le jeu de données 
 if page == pages[1] : 
+  st.write("### Introduction")
+  
+  
+# Exploration  
+if page == pages[2] : 
   st.write("### Introduction")  
   st.dataframe(df_ana.head(10))
   st.write(df_ana.shape)
@@ -46,7 +65,7 @@ if page == pages[1] :
 
   
 # Dataviz  
-if page == pages[2] : 
+if page == pages[3] : 
   st.write("### Introduction") 
   
   df_temp=df_prepro.copy()
@@ -210,5 +229,5 @@ if page == pages[2] :
   st.pyplot(fig)
   
 # Modélisation  
-if page == pages[3] : 
+if page == pages[4] : 
   st.write("### Introduction")  
