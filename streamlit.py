@@ -8,6 +8,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from PIL import Image
+
 import joblib
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix,ConfusionMatrixDisplay,classification_report, f1_score, accuracy_score, recall_score, precision_score
@@ -37,7 +38,9 @@ df_model = load_data3()
 
 st.title("Projet de prédiction de la gravité des accidents")
 st.sidebar.title("Sommaire")
+
 pages=["Contexte", "Le jeu de données", "Analyse des données", "Préprocessing", "Modélisation", "Conclusion & Perspectives"]
+
 page=st.sidebar.radio("Aller vers", pages)
 
 ########################################### contexte #################################################   
@@ -67,6 +70,7 @@ if page == pages[0] :
   
   st.write("#### Objectif")
   st.write("L’objectif de ce projet est de prédire la gravité des accidents routiers en France. Les prédictions seront basées sur les données historiques, à partir des données disponibles sur [data.gouv.fr/](https://www.data.gouv.fr/fr/datasets/bases-de-donnees-annuelles-des-accidents-corporels-de-la-circulation-routiere-annees-de-2005-a-2022/).")
+
 
   
   st.write("La première étape a été d’étudier et appliquer des méthodes pour nettoyer le jeu de données. La deuxième étape a été de créer un modèle prédictif. Une fois l’entraînement du modèle effectué, nous avons comparer notre modèle avec les données. ")
@@ -99,6 +103,7 @@ if page == pages[1] :
   if st.checkbox("Afficher le dataframe") :
     st.dataframe(df_ana.head())
   
+
     ########################################### Analyse des données = Dataviz#################################################   
 
 if page == pages[2] : 
@@ -315,6 +320,7 @@ if page == pages[2] :
   st.pyplot(fig)
   st.write("-------------")
   
+
     ############################################### Préprocessing ###################################################   
  
 if page == pages[3] : 
@@ -438,6 +444,7 @@ if page == pages[3] :
   st.write("Variables d'origines :", "1 – Indemne, 2 – Tué, 3 – Blessé hospitalisé, 4 – Blessé léger")
   st.write("Nouvelles variables  :", "1 – Accident sans gravité, 2 – Accident avec gravité")    
   
+
   st.write("#### Suppression des variables") 
   df_mqt = pd.DataFrame({
     'Variables': ['dep', 'mois', "heure, minute", "jour, date_obj","an_nais, age","an", "lartpc, occutc, v2", "id_accident, id_vehicule, id_usager"],
