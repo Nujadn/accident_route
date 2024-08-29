@@ -476,9 +476,9 @@ if page == pages[4] :
     "model xgbc" : joblib.load('models_saved/GBClassifier_model.joblib'),
     "model régression logistique" : joblib.load('models_saved/lr_model.joblib'),
     "model lgbm" : joblib.load('models_saved/lgbm_model.joblib'),
-    "model random forest" : joblib.load('models_saved/rf_model.joblib')#,
+    "model random forest" : joblib.load('Brouillons/rf_model.joblib')#,
   #  "model knn" : joblib.load('models_saved/KNeighborsClassifier_model.joblib')
-           }
+           } 
   selected_model = st.selectbox("Choisissez un modèle:", options=list(models.keys()))
   model = models[selected_model]
   y_pred = model.predict(X_test_scaled)
