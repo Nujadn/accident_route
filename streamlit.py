@@ -4,9 +4,15 @@
 # import des librairies
 import streamlit as st
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from PIL import Image
+
+import joblib
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix,ConfusionMatrixDisplay,classification_report, f1_score, accuracy_score, recall_score, precision_score
+from sklearn.preprocessing import StandardScaler
 
 # librairie pour afficher toutes les colonnes du dataframe
 pd.set_option('display.max_columns', None)
@@ -32,10 +38,13 @@ df_model = load_data3()
 
 st.title("Projet de prédiction de la gravité des accidents")
 st.sidebar.title("Sommaire")
-pages=["Contexte", "Le jeu de données", "Analyse des données", "Préprocessing", "Modélisation"]
+
+pages=["Contexte", "Le jeu de données", "Analyse des données", "Préprocessing", "Modélisation", "Conclusion & Perspectives"]
+
 page=st.sidebar.radio("Aller vers", pages)
 
-# contexte
+########################################### contexte #################################################   
+
 if page == pages[0] : 
   st.title("Introduction")
   st.write('Le projet « Accidents routiers en France » s’inscrit dans le cadre du cursus Datascientist, formation continue proposée par l’école Datascientest.')
@@ -62,11 +71,12 @@ if page == pages[0] :
   st.write("#### Objectif")
   st.write("L’objectif de ce projet est de prédire la gravité des accidents routiers en France. Les prédictions seront basées sur les données historiques, à partir des données disponibles sur [data.gouv.fr/](https://www.data.gouv.fr/fr/datasets/bases-de-donnees-annuelles-des-accidents-corporels-de-la-circulation-routiere-annees-de-2005-a-2022/).")
 
+
   
   st.write("La première étape a été d’étudier et appliquer des méthodes pour nettoyer le jeu de données. La deuxième étape a été de créer un modèle prédictif. Une fois l’entraînement du modèle effectué, nous avons comparer notre modèle avec les données. ")
 
-
-# Le jeu de données 
+########################################### Le jeu de données #################################################   
+ 
 if page == pages[1] : 
   st.title("Introduction")
   st.markdown("""
@@ -94,7 +104,8 @@ if page == pages[1] :
     st.dataframe(df_ana.head())
   
 
-# Analyse des données = Dataviz  
+    ########################################### Analyse des données = Dataviz#################################################   
+
 if page == pages[2] : 
   st.markdown("<h2 style='text-align: center;'>Données Clés</h2>", unsafe_allow_html=True)
   
@@ -309,8 +320,9 @@ if page == pages[2] :
   st.pyplot(fig)
   st.write("-------------")
   
-  
-# Préprocessing  
+
+    ############################################### Préprocessing ###################################################   
+ 
 if page == pages[3] : 
   
   def missing_values_table(df):
@@ -432,11 +444,60 @@ if page == pages[3] :
   st.write("Variables d'origines :", "1 – Indemne, 2 – Tué, 3 – Blessé hospitalisé, 4 – Blessé léger")
   st.write("Nouvelles variables  :", "1 – Accident sans gravité, 2 – Accident avec gravité")    
   
-  st.write("#### Suppresion des variables") 
+
+  st.write("#### Suppression des variables") 
   df_mqt = pd.DataFrame({
-    'Variables': ['an_acc', 'dep', 'mois'],
-    'Raison': ['Paris', 'Lyon', 'Marseille']
+    'Variables': ['dep', 'mois', "heure, minute", "jour, date_obj","an_nais, age","an", "lartpc, occutc, v2", "id_accident, id_vehicule, id_usager"],
+    'Raison': ['doublon avec les variables lat et long', 'doublon avec weekday','doublon avec tranche horaire', "doublon avec weekday",'doublon avec tranche âge', "année de l'accident", "90 % de manquants", "variables qui a servi à faire la liaison"]
 })
-# Modélisation  
+  st.table(df_mqt)
+  
+  if st.checkbox("Afficher le dataframe final") :
+    st.dataframe(df_model.head())
+  
+############################################### Modélisation ###################################################   
+ 
 if page == pages[4] : 
-  st.write("### Introduction")    
+  st.write("#### Sélection du Modèle de Machine Learning")   
+  
+  X = df_model.drop(['grav'], axis=1)
+  y = df_model.grav
+  
+  X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
+   
+  scaler = StandardScaler()
+
+  X_train_scaled = scaler.fit_transform(X_train)
+  X_test_scaled = scaler.transform(X_test) 
+  
+  models = {
+    "model adaboost" : joblib.load('models_saved/best_estimator_ada_model.joblib'),
+  #  "model extra trees classifier" : joblib.load('Brouillons/extra_tree_classifier_model.joblib'),
+    "model xgbc" : joblib.load('models_saved/GBClassifier_model.joblib'),
+    "model régression logistique" : joblib.load('models_saved/lr_model.joblib'),
+    "model lgbm" : joblib.load('models_saved/lgbm_model.joblib'),
+    "model random forest" : joblib.load('models_saved/rf_model.joblib')#,
+  #  "model knn" : joblib.load('models_saved/KNeighborsClassifier_model.joblib')
+           }
+  selected_model = st.selectbox("Choisissez un modèle:", options=list(models.keys()))
+  model = models[selected_model]
+  y_pred = model.predict(X_test_scaled)
+  st.write(f"### Résultats pour {selected_model}")
+  
+  st.write("#### Rapport de Classification")
+  st.text(classification_report(y_test, y_pred))
+  
+  st.write("#### Matrice de Confusion en pourcentages")
+  cm = confusion_matrix(y_test, y_pred)
+  cm_percentage = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis] * 100
+  disp = ConfusionMatrixDisplay(confusion_matrix=cm_percentage)
+  
+  fig, ax = plt.subplots(figsize=(8, 6))
+  disp.plot(ax=ax, cmap='Blues', values_format=".2f")
+  st.pyplot(fig)
+  
+  ############################################### Perspectives ###################################################   
+ 
+if page == pages[5] : 
+  st.write("#### Bilan")  
+  
