@@ -39,7 +39,7 @@ df_model = load_data3()
 st.title("Projet de prédiction de la gravité des accidents")
 st.sidebar.title("Sommaire")
 
-pages=["Contexte", "Le jeu de données", "Analyse des données", "Préprocessing", "Modélisation", "Conclusion & Perspectives"]
+pages=["Contexte", "Le jeu de données", "Analyse des données", "Préprocessing", "Prédictions", "Conclusion & Perspectives"]
 
 page=st.sidebar.radio("Aller vers", pages)
 
@@ -474,7 +474,7 @@ if page == pages[4] :
     "model adaboost" : joblib.load('models_saved/best_estimator_ada_model.joblib'),
   #  "model extra trees classifier" : joblib.load('Brouillons/extra_tree_classifier_model.joblib'),
     "model xgbc" : joblib.load('models_saved/GBClassifier_model.joblib'),
-    "model régression logistique" : joblib.load('models_saved/lr_model.joblib'),
+  #  "model régression logistique" : joblib.load('models_saved/lr_model.joblib'),
     "model lgbm" : joblib.load('models_saved/lgbm_model.joblib'),
     "model random forest" : joblib.load('Brouillons/rf_model.joblib')#,
   #  "model knn" : joblib.load('models_saved/KNeighborsClassifier_model.joblib')
@@ -500,4 +500,13 @@ if page == pages[4] :
  
 if page == pages[5] : 
   st.write("#### Bilan")  
+  st.write('La mission du projet était de prédire si un accident est grave ou non en fonction des données historiques.')
+  st.write("Nous sommes passés par plusieurs étapes, allant de l’exploration du dataset, à sa visualisation jusqu'à l'implémentation d'une solution de prédictions dans application web. ")
+  
+  st.write("#### Perspectives")
+  st.write("Avec ce projet, nous avons pu effectuer tout d’abord une modélisation simple avec des modèles de classification comme le Random Forest Classifier. Puis nous avons effectuer d'autres modélisations en Machine Learning comme le Adaboost Classifier, le LightGBM Classifier ou le XGBoost Classifier.")
+  st.write("Pour aller plus loin, nous souhaiterions effectuer une énième modélisation avec les réseaux récurrents RNN pour comparer les résultats avec les autres de modèles de Machine Learning.")
+  
+  
+  
   
