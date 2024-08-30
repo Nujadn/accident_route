@@ -478,7 +478,7 @@ if page == pages[4] :
     "model lgbm" : joblib.load('models_saved/lgbm_model.joblib'),
     "model random forest" : joblib.load('Brouillons/rf_model.joblib')#,
   #  "model knn" : joblib.load('models_saved/KNeighborsClassifier_model.joblib')
-           } 
+           }
   selected_model = st.selectbox("Choisissez un modèle:", options=list(models.keys()))
   model = models[selected_model]
   y_pred = model.predict(X_test_scaled)
@@ -505,8 +505,8 @@ if page == pages[5] :
   
   st.write("#### Perspectives")
   st.write("Avec ce projet, nous avons pu effectuer tout d’abord une modélisation simple avec des modèles de classification comme le Random Forest Classifier. Puis nous avons effectuer d'autres modélisations en Machine Learning comme le Adaboost Classifier, le LightGBM Classifier ou le XGBoost Classifier.")
-  st.write("Pour aller plus loin, nous souhaiterions effectuer une énième modélisation avec les réseaux récurrents RNN pour comparer les résultats avec les autres de modèles de Machine Learning.")
-  
+  st.write("Pour aller plus loin, nous pourrions effectuer une énième modélisation avec les réseaux récurrents RNN pour comparer les résultats avec les autres modèles de Machine Learning.")
+  st.write("Il serait possible également de développer un modèle de scoring des zones à risques en fonction des informations météorologiques, l’emplacement géographique (coordonnées GPS, images satellite, …). Cela permettrait de cibler les campagnes de prévention en fonction des zones à risques.")
   
   
   
