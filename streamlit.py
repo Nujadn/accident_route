@@ -35,7 +35,6 @@ df_ana = load_data1()
 df_prepro = load_data2()
 df_model = load_data3()
 
-
 st.title("Projet de prédiction de la gravité des accidents")
 st.sidebar.title("Sommaire")
 
@@ -460,11 +459,14 @@ if page == pages[3] :
 if page == pages[4] : 
   st.write("#### Sélection du Modèle de Machine Learning")   
   
-  X = df_model.drop(['grav'], axis=1)
-  y = df_model.grav
+  df_model['index'] = df_model.index
+  df_train, df_test = train_test_split(df_model, test_size=0.2, random_state=42)
   
-  X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
-   
+  X_train = df_train.drop(["grav","index"], axis=1)
+  y_train = df_train.grav
+  X_test = df_test.drop(["grav","index"], axis=1)
+  y_test = df_test.grav
+     
   scaler = StandardScaler()
 
   X_train_scaled = scaler.fit_transform(X_train)
@@ -497,7 +499,7 @@ if page == pages[4] :
   st.pyplot(fig)
   
   st.write("#### Importances des variables")
-  features = X_train.columns
+  features = X_test.columns
   importances = model.feature_importances_
   indices = np.argsort(importances)
 
@@ -507,19 +509,21 @@ if page == pages[4] :
   plt.xlabel('Importance Relative')
   st.pyplot(fig)
   
-  st.write("Carte des erreurs du model")
-  df_mis = df_model.iloc[:len(y_test)]
-  df_mis = df_mis.rename(columns={'lat': 'latitude', 'long': 'longitude'})
-  lat_mina, lat_maxa = 41.303, 51.124
-  long_mina, long_maxa = -5.142, 9.562
-  df_mis['pred'] = y_pred
-  df_mism = df_mis[
-    (df_mis['latitude'] >= lat_mina) &
-    (df_mis['latitude'] <= lat_maxa) &
-    (df_mis['longitude'] >= long_mina) &
-    (df_mis['longitude'] <= long_maxa)
-    ]
-  df_mismatch = df_mism[df_mism['grav'] != df_mism['pred']]
+  st.write("#### Carte des erreurs du model")
+  
+  df_test['y_pred'] = y_pred
+  df_test = df_test[['index', 'grav', 'y_pred','lat','long']]
+  df_test = df_test.rename(columns={'grav': 'y_test', 'lat': 'latitude', 'long': 'longitude'})
+  
+  df_mismatch = df_test[df_test['y_test'] != df_test['y_pred']]
+  
+  st.write(f"Nombre d'erreurs : {len(df_mismatch)}")
+  
+
+  st.write(f"Nombre d'accidents : {len(y_test)}")
+
+  prt_er = (1-accuracy_score(y_test, y_pred)) * 100
+  st.write(f"Pourcentage : {prt_er: .2f}%")
 
   st.map(df_mismatch, size=10)
   
