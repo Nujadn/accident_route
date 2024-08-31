@@ -496,6 +496,33 @@ if page == pages[4] :
   disp.plot(ax=ax, cmap='Blues', values_format=".2f")
   st.pyplot(fig)
   
+  st.write("#### Importances des variables")
+  features = X_train.columns
+  importances = model.feature_importances_
+  indices = np.argsort(importances)
+
+  fig = plt.figure(figsize=(10, 6))
+  plt.barh(range(len(indices)), importances[indices], align="center")
+  plt.yticks(range(len(indices)), [features[i] for i in indices])
+  plt.xlabel('Importance Relative')
+  st.pyplot(fig)
+  
+  st.write("Carte des erreurs du model")
+  df_mis = df_model.iloc[:len(y_test)]
+  df_mis = df_mis.rename(columns={'lat': 'latitude', 'long': 'longitude'})
+  lat_mina, lat_maxa = 41.303, 51.124
+  long_mina, long_maxa = -5.142, 9.562
+  df_mis['pred'] = y_pred
+  df_mism = df_mis[
+    (df_mis['latitude'] >= lat_mina) &
+    (df_mis['latitude'] <= lat_maxa) &
+    (df_mis['longitude'] >= long_mina) &
+    (df_mis['longitude'] <= long_maxa)
+    ]
+  df_mismatch = df_mism[df_mism['grav'] != df_mism['pred']]
+
+  st.map(df_mismatch, size=10)
+  
   ############################################### Perspectives ###################################################   
  
 if page == pages[5] : 
