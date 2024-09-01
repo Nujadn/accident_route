@@ -358,7 +358,7 @@ if page == pages[3] :
     st.pyplot(plt)
   elif option == 'Après le préprocessing':
     plt.figure(figsize=(8, 4))
-    sns.countplot(x='nbv', data=df_apprepro_nbv, palette='pastel', order=sorted(df_apprepro_nbv['nbv'].unique()))
+    sns.countplot(x='nbv', data=df_apprepro_nbv, palette='pastel')
     plt.ylabel("Nombre d'accidents")
     plt.xlabel("Nombre de voies")
     st.pyplot(plt)
