@@ -346,14 +346,36 @@ if page == pages[3] :
     st.dataframe(missing_values_table(df_ana) )
  
   st.write("#### Transformation des variables")  
+  
   st.write("##### Nombre de voies") 
-  st.write(f'Avant préprocessing : {df_prepro.nbv.unique()}') 
-  df_nbv = df_prepro.copy()
-  d_u = df_model.nbv.unique()
-  st.write(f"Après préprocessing : {d_u}")
-    
+  fig = plt.figure(figsize=(5,5))
+  df_avprepro_nbv = df_ana.copy()
+  df_apprepro_nbv = df_model.copy()
+  plt.xticks(rotation=45, ha='right')
+  option = st.selectbox(
+    "Choisissez la distribution :",
+    ('Avant le préprocessing', 'Après le préprocessing')
+      )
+  if option == 'Avant le préprocessing':
+  #  st.subheader('Nombre de voies avant le préprocessing')
+    plt.figure(figsize=(8, 4))
+    sns.countplot(x='nbv', data=df_avprepro_nbv, palette='pastel')
+    plt.ylabel("Nombre d'accidents")
+    plt.xlabel("Nombre de voies")
+  #  plt.title('Countplot Avant Préprocessing')
+    st.pyplot(plt)
+  elif option == 'Après le préprocessing':
+  #  st.subheader('Nombre de voies après le préprocessing')
+    plt.figure(figsize=(8, 4))
+    sns.countplot(x='nbv', data=df_apprepro_nbv, palette='pastel')
+    plt.ylabel("Nombre d'accidents")
+    plt.xlabel("Nombre de voies")
+  #  plt.title('Countplot Avant Préprocessing')
+    st.pyplot(plt)
+
+  
+   
   st.write("##### Département et commune")
-  st.write("##### Département") 
   col1, col2 = st.columns(2)
   with col1 :
     df_dep = df_ana.loc[(df_ana['dep'] == '2A') | (df_ana['dep'] == '2B')]
@@ -362,17 +384,6 @@ if page == pages[3] :
     df_dep['dep'] = df_dep['dep'].str.replace('2A', '20')
     df_dep['dep'] = df_dep['dep'].str.replace('2B', '20')
     st.write(df_dep['dep'].value_counts())
-    
-  st.write("##### Commune") 
-  col1, col2 = st.columns(2)
-  with col1 :
-    df_com = df_dep.copy()
-    st.write(df_com['com'].value_counts())
-  with col2 : 
-    df_com['com'] = df_com['com'].str.replace('B', '0')
-    df_com['com'] = df_com['com'].str.replace('A', '0')
-    df_com['com'] = df_com['com'].str.replace('N/C', '14061')
-    st.write(df_com['com'].value_counts())
     
     
   st.write("####  Création de nouvelles variables")
@@ -488,6 +499,8 @@ if page == pages[4] :
   
   st.write("#### Rapport de Classification")
   st.text(classification_report(y_test, y_pred))
+  st.write("-------------")
+  
   
   st.write("#### Matrice de Confusion en pourcentages")
   cm = confusion_matrix(y_test, y_pred)
@@ -497,6 +510,7 @@ if page == pages[4] :
   fig, ax = plt.subplots(figsize=(8, 6))
   disp.plot(ax=ax, cmap='Blues', values_format=".2f")
   st.pyplot(fig)
+  st.write("-------------")
   
   st.write("#### Importances des variables")
   features = X_test.columns
@@ -508,23 +522,17 @@ if page == pages[4] :
   plt.yticks(range(len(indices)), [features[i] for i in indices])
   plt.xlabel('Importance Relative')
   st.pyplot(fig)
+  st.write("-------------")
   
   st.write("#### Carte des erreurs du model")
-  
   df_test['y_pred'] = y_pred
   df_test = df_test[['index', 'grav', 'y_pred','lat','long']]
   df_test = df_test.rename(columns={'grav': 'y_test', 'lat': 'latitude', 'long': 'longitude'})
-  
   df_mismatch = df_test[df_test['y_test'] != df_test['y_pred']]
-  
   st.write(f"Nombre d'erreurs : {len(df_mismatch)}")
-  
-
   st.write(f"Nombre d'accidents : {len(y_test)}")
-
   prt_er = (1-accuracy_score(y_test, y_pred)) * 100
   st.write(f"Pourcentage : {prt_er: .2f}%")
-
   st.map(df_mismatch, size=10)
   
   ############################################### Perspectives ###################################################   
