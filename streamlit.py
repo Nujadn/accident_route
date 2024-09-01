@@ -50,23 +50,8 @@ if page == pages[0] :
   st.markdown("""
      Dans le cadre de la Décennie d’action pour la sécurité routière, les Nations Unis ont fixé pour objectif de réduire d’au moins 50 % le nombre d’accidents mortels. Les accidents de la route constituent un problème majeur de santé publique, entraînant de graves conséquences pour les victimes et leurs familles. En plus des blessures physiques, ils peuvent bouleverser la vie des victimes en les privant de leur autonomie, parfois de manière temporaire ou permanente. Les familles sont souvent amenées à réorganiser leur quotidien pour s'occuper des blessés, ce qui peut également perturber leur vie personnelle et professionnelle. Ce qui rajoute un impact économique pour les victimes, leurs familles et leur pays.         
               """)
-  
-  st.title("Notions introduites ")
-  st.markdown("""
-       La gravité d’un accident de la route est définie selon la sécurité routière française par “le caractère dangereux de quelque chose qui peut laisser des séquelles importantes ou porter atteinte à la vie.”
-       Ainsi, les données mises à disposition par data.gouv. appliquent la notion de gravité où chaque catégorie de “gravité” est distribuée comme la suivante : “indemne”, “tué”, “blessé hospitalisé” et “blessé léger”.
-             """)
-  st.write("Selon l'OMS, en 2023, 53% des décès dus aux accidents concernent des usagers de la route vulnérables, notamment : les piétons (23 %) ; les conducteurs de deux-roues et de trois-roues motorisés tels que les motocyclettes (21 %) ; les cyclistes (6 %) ; et les usagers d’engins de micro-mobilité comme les trottinettes électriques (3 %).")
-  st.write("D'après les données disponibles pour 2021 de la commission européenne, 52 % des décès dus à des accidents de la route sont survenus en zone rurale, contre 39 % en zone urbaine et 9 % sur des autoroutes. Trois victimes sur quatre (78 %) sont des hommes.")
-  st.write("En zone urbaine, les usagers vulnérables de la route (piétons, cyclistes et usagers de deux-roues motorisés) représentent près de 70 % du total des décès.")
-  st.markdown("""
-      Un accident corporel implique un certain nombre d’usagers. Parmi ceux-ci, on distingue :
-      - les personnes indemnes : impliquées non décédées et dont l’état ne nécessite aucun soin médical du fait de l’accident, les victimes : impliquées non indemnes.
-      - les personnes tuées : personnes qui décèdent du fait de l’accident, sur le coup ou dans les trente jours qui suivent l’accident, les personnes blessées : victimes non tuées.
-      - les blessés dits « hospitalisés » : victimes hospitalisées plus de 24 heures,
-      - les blessés légers : victimes ayant fait l'objet de soins médicaux mais n'ayant pas été admises comme patients à l'hôpital plus de 24 heures.
-              """)
-  
+  st.write("-------------")
+    
   st.write("#### Objectif")
   st.write("L’objectif de ce projet est de prédire la gravité des accidents routiers en France. Les prédictions seront basées sur les données historiques, à partir des données disponibles sur [data.gouv.fr/](https://www.data.gouv.fr/fr/datasets/bases-de-donnees-annuelles-des-accidents-corporels-de-la-circulation-routiere-annees-de-2005-a-2022/).")
 
@@ -84,21 +69,31 @@ if page == pages[1] :
      - survient sur une voie publique ou privée, ouverte à la circulation publique, 
      - implique au moins un véhicule.
      """)
+  st.write("-------------")
+  
   st.write("#### MCD des données")
   st.write("Afin de pouvoir prédire la gravité des accidents de la route en France, nous nous sommes principalement basés sur les datasets fournis par le [Ministère de l’intérieur et des Outre-Mer](https://www.data.gouv.fr/fr/datasets/bases-de-donnees-annuelles-des-accidents-corporels-de-la-circulation-routiere-annees-de-2005-a-2022/). Les bases de données sont réparties annuellement en 4 fichiers au format csv, de 2005 à 2022 :")
   st.write("Chaque accident corporel où une unité des forces de l’ordre (police, gendarme, etc) est intervenu, a été renseigné dans une fiche intitulée “bulletin d’analyse des accidents corporels”, aussi appelé “fichier BAAC”. Chaque ligne saisie détaille, de manière anonymisée, le lieu et les caractéristiques de l’accident, les véhicules impliqués et leurs victimes. ")
   st.image(Image.open('images/acc_route.jpg'), caption='MCD des données', use_column_width=True)
   
+  st.write("-------------")
   st.write("##### La table caractéristiques :")
   st.write("La table décrit les circonstances générales de l’accident. Le numéro d'identifiant de l’accident présent dans ces 4 rubriques permet d'établir un lien entre toutes les variables qui décrivent un accident. ")
   st.write("##### La table lieux :")
-  st.write("La table décrit le lieu principal de l’accident même si celui-ci s’est déroulé à une intersection ")
+  st.write("La table décrit le lieu principal de l’accident même si celui-ci s’est déroulé à une intersection.")
   st.write("##### La table usagers :")
   st.write("La table décrit le profil du ou des usagers impliqué(s) dans l'accident. Ces informations ne divulguent pas les données spécifiques des usagers et des véhicules ainsi que leur comportement qui pourraient porter atteinte à leur vie privée et qui pourraient les rendre identifiables, ou qui pourraient leur porter préjudice.")
   st.write("##### La table véhicules :")
   st.write("La table décrit le ou les véhicules impliqué(s) dans l'accident. Quand un accident comporte plusieurs véhicules, il faut aussi pouvoir le relier chaque véhicule à ses occupants. Ce lien est fait par l'identifiant du véhicule. ")
 
-
+  st.write("#### Variable cible")
+  st.markdown("""
+      Un accident corporel implique un certain nombre d’usagers. Parmi ceux-ci, on distingue :
+      - les personnes indemnes : impliquées non décédées et dont l’état ne nécessite aucun soin médical du fait de l’accident, les victimes : impliquées non indemnes.
+      - les personnes tuées : personnes qui décèdent du fait de l’accident, sur le coup ou dans les trente jours qui suivent l’accident, les personnes blessées : victimes non tuées.
+      - les blessés dits « hospitalisés » : victimes hospitalisées plus de 24 heures,
+      - les blessés légers : victimes ayant fait l'objet de soins médicaux mais n'ayant pas été admises comme patients à l'hôpital plus de 24 heures.
+              """)
   if st.checkbox("Afficher le dataframe") :
     st.dataframe(df_ana.head())
   
@@ -344,35 +339,30 @@ if page == pages[3] :
     st.write(df_ana.duplicated(keep=False).sum() )
   if st.checkbox("Afficher les valeurs manquantes") :
     st.dataframe(missing_values_table(df_ana) )
+  st.write("-------------")
  
   st.write("#### Transformation des variables")  
   
   st.write("##### Nombre de voies") 
-  fig = plt.figure(figsize=(5,5))
   df_avprepro_nbv = df_ana.copy()
   df_apprepro_nbv = df_model.copy()
-  plt.xticks(rotation=45, ha='right')
   option = st.selectbox(
     "Choisissez la distribution :",
     ('Avant le préprocessing', 'Après le préprocessing')
       )
   if option == 'Avant le préprocessing':
-  #  st.subheader('Nombre de voies avant le préprocessing')
     plt.figure(figsize=(8, 4))
     sns.countplot(x='nbv', data=df_avprepro_nbv, palette='pastel')
     plt.ylabel("Nombre d'accidents")
     plt.xlabel("Nombre de voies")
-  #  plt.title('Countplot Avant Préprocessing')
     st.pyplot(plt)
   elif option == 'Après le préprocessing':
-  #  st.subheader('Nombre de voies après le préprocessing')
     plt.figure(figsize=(8, 4))
-    sns.countplot(x='nbv', data=df_apprepro_nbv, palette='pastel')
+    sns.countplot(x='nbv', data=df_apprepro_nbv, palette='pastel', order=sorted(df_apprepro_nbv['nbv'].unique()))
     plt.ylabel("Nombre d'accidents")
     plt.xlabel("Nombre de voies")
-  #  plt.title('Countplot Avant Préprocessing')
     st.pyplot(plt)
-
+  st.write("-------------")
   
    
   st.write("##### Département et commune")
@@ -384,73 +374,124 @@ if page == pages[3] :
     df_dep['dep'] = df_dep['dep'].str.replace('2A', '20')
     df_dep['dep'] = df_dep['dep'].str.replace('2B', '20')
     st.write(df_dep['dep'].value_counts())
-    
+  st.write("-------------") 
     
   st.write("####  Création de nouvelles variables")
   st.write("##### Création d'une tranche horaire") 
-  col1, col2 = st.columns(2)
-  with col1 :
-    df_h = df_ana.copy()
-    st.write(df_h['hrmn'].value_counts())
-  with col2 : 
-   sepa_values = [value.split(':') for value in df_h["hrmn"] ]
-   df_h["heure"] = [value[0] for value in sepa_values]
-   df_h["heure"] = df_h["heure"].astype(int)
-   bins = [1, 5, 7, 10, 13, 16, 19, 24]
-   labels = [100, 200, 300, 400, 500, 600, 700]
-   df_h['h_group'] = pd.cut(df_h['heure'], bins=bins, labels=labels, right=False)
-   df_h['h_group'] = df_h['h_group'].replace([100, 200, 300, 400, 500, 600, 700], [1, 2, 3, 4, 5, 6, 7])
-   st.write(df_model['h_group'].value_counts())
-  st.markdown("""
-       Tranche horaire : 1 à 5 heures = 1, 5 à 7 heures = 2, 7 à 10 heures = 3, 10 à 13 heures = 4, 13 à 16 heures = 5, 16 à 19 heures = 6, 19 à 24 heures = 7     
-               """)
-
+  df_avprepro_h = df_ana.copy()
+  sepa_values = [value.split(':') for value in df_avprepro_h["hrmn"] ]
+  df_avprepro_h["heure"] = [value[0] for value in sepa_values]
+  df_apprepro_h = df_model.copy()
+  option = st.selectbox(
+    "Choisissez la distribution :",
+    ("Avant le préprocessing de l'heure", "Après le préprocessing de l'heure")
+      )
+  if option == "Avant le préprocessing de l'heure":
+    plt.figure(figsize=(8, 4))
+    sns.countplot(x='heure', data=df_avprepro_h, palette='pastel', order=sorted(df_avprepro_h['heure'].unique()))
+    plt.ylabel("Nombre d'accidents")
+    plt.xlabel("Heure")
+    st.pyplot(plt)
+  elif option == "Après le préprocessing de l'heure":
+    plt.figure(figsize=(8, 4))
+    sns.countplot(x='h_group', data=df_apprepro_h, palette='pastel')
+    plt.ylabel("Nombre d'accidents")
+    plt.xlabel("Heure")
+    plt.xticks([0,1, 2, 3,4,5,6, 7], ['1 à 5H', '5 à 7H', "7 à 10H", "10 à 13H", "13 à 16H", "16 à 19H", "19 à 22H", "22 à 1H"])
+    st.pyplot(plt)
+  st.write("-------------")
+  
   st.write("##### Création d'une tranche d'âge") 
-  col1, col2 = st.columns(2)
-  with col1 :
-    df_age = df_ana.copy()
-    st.write(df_age['an_nais'].value_counts())
-  with col2 : 
-   bins = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130]
-   labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] # 1: 0 à 10, 2: 21-30, '3: 31-40, 4: 41-50, 5: 51-60, 6: 61-70, 7: 70 et plus
-   df_age['age'] = df_age['an'] - df_age['an_nais']
-   df_age['age_group'] = pd.cut(df_age['age'], bins=bins, labels=labels, right=False)
-   df_age['age_group'] = df_age['age_group'].replace([7, 8, 9, 10, 11, 12, 13], 7)
-   st.write(df_model['age_group'].value_counts())
-  st.write("Tranche d'âge : 1: 0 à 10 ans, 2: 21-30 ans, 3: 31-40 ans, 4: 41-50 ans, 5: 51-60 ans, 6: 61-70 ans, 7: 70 ans et plus")
-
+  df_avprepro_age = df_ana.copy()
+  df_avprepro_age['age'] = df_avprepro_age['an'] - df_avprepro_age['an_nais']
+  df_apprepro_age = df_model.copy()
+  option = st.selectbox(
+    "Choisissez la distribution :",
+    ("Avant le préprocessing de la tranche d'âge", "Après le préprocessing de la tranche d'âge")
+      )
+  if option == "Avant le préprocessing de la tranche d'âge":
+    plt.figure(figsize=(8, 4))
+    sns.countplot(x='age', data=df_avprepro_age, palette='pastel')
+    plt.ylabel("Nombre d'accidents")
+    plt.xlabel("Tranche d'âge")
+    st.pyplot(plt)
+  elif option == "Après le préprocessing de la tranche d'âge":
+    plt.figure(figsize=(8, 4))
+    sns.countplot(x='age_group', data=df_apprepro_age, palette='pastel')
+    plt.ylabel("Nombre d'accidents")
+    plt.xlabel("Tranche d'âge")
+    plt.xticks([0, 1, 2, 3,4,5,6, 7], ['0 à 10', '11 à 20', "21-30", "31 à 40", "41 à 50", "51 à 60", "61 à 70", "71 et plus"])
+    st.pyplot(plt)
+  st.write("-------------")
   
   st.write("####  Regroupement de variables")
   st.write("##### Modes de déplacement") 
-  col1, col2 = st.columns(2)
-  with col1 :
-    df_depl = df_ana.copy()
-    st.write(df_depl['catv'].value_counts())
-  with col2 :   
-    fig = plt.figure(figsize= (5, 5))
-    plt.hist(df_model['catv'],  color = ['#f27750'], label = ['catv'])
-    plt.xlabel("Mode de déplacement")
+  df_avprepro_mdp = df_ana.copy()
+  df_apprepro_mdp = df_model.copy()
+  option = st.selectbox(
+    "Choisissez la distribution :",
+    ("Avant le préprocessing du mode de déplacement", "Après le préprocessing du mode de déplacement")
+      )
+  if option == "Avant le préprocessing du mode de déplacement":
+    plt.figure(figsize=(8, 4))
+    sns.countplot(x='catv', data=df_avprepro_mdp, palette='pastel')
     plt.ylabel("Nombre d'accidents")
+    plt.xlabel("Mode de déplacement")
+    st.pyplot(plt)
+  elif option == "Après le préprocessing du mode de déplacement":
+    plt.figure(figsize=(8, 4))
+    sns.countplot(x='catv', data=df_apprepro_mdp, palette='pastel')
+    plt.ylabel("Nombre d'accidents")
+    plt.xlabel("Mode de déplacement")
     plt.xticks([0,1, 2, 3,4,5,6], ['Marche', 'EDPM', "Vélo", "2RM", "VT", "VU", "Voiture"])
-    plt.title('Distribution des accidents par mode de déplacement')
-    st.pyplot(fig)
+    st.pyplot(plt)
+  st.write("-------------")
   
   st.write("##### Systèmes de sécurité") 
-  col1, col2 = st.columns(2)
-  with col1 :
-    df_depl = df_ana.copy()
-    st.write(df_depl['secu1'].value_counts())
-  with col2 :
-    dft = df_model.loc[(df_model['secu1'] >= 1)]
-    st.write(dft['secu1'].value_counts())
+  fig = plt.figure(figsize=(5,5))
+  df_avprepro_se = df_ana.copy()
+  df_apprepro_se = df_model.loc[(df_model['secu1'] >= 1)].copy()
+  option = st.selectbox(
+    "Choisissez la distribution :",
+    ("Avant le préprocessing du système de sécurité", "Après le préprocessing du système de sécurité")
+      )
+  if option == "Avant le préprocessing du système de sécurité":
+    plt.figure(figsize=(8, 4))
+    sns.countplot(x='secu1', data=df_avprepro_se, palette='pastel')
+    plt.ylabel("Nombre d'accidents")
+    plt.xlabel("Système de sécurité")
+    st.pyplot(plt)
+  elif option == "Après le préprocessing du système de sécurité":
+    plt.figure(figsize=(8, 4))
+    sns.countplot(x='secu1', data=df_apprepro_se, palette='pastel')
+    plt.ylabel("Nombre d'accidents")
+    plt.xlabel("Système de sécurité")
+    plt.xticks([0,1], ['Présence', 'Absence'])
+    st.pyplot(plt)
+  st.write("-------------")
     
   st.write("##### Variable cible : gravité") 
-  col1, col2 = st.columns(2)
-  with col1 :
-   st.write(df_ana.grav.value_counts())   
-  with col2 :
-    st.write(df_model.grav.value_counts())  
-  st.write("Comme on a pu le voir précédemment, le jeu de données est déséquilibré sur la variable cible. Par exemple, la proportion d'accident mortel est plus faible que celle d'indemne. Pour cela nous avons combiné les variables indemne et non concerné ensemble, car si la personne n'est pas concerné par la gravité c'est qu'elle est indemne.")  
+  df_avprepro_se = df_ana.copy()
+  df_apprepro_se = df_model.copy()
+  option = st.selectbox(
+    "Choisissez la distribution :",
+    ("Avant le préprocessing de gravité", "Après le préprocessing de gravité")
+      )
+  if option == "Avant le préprocessing de gravité":
+    plt.figure(figsize=(8, 4))
+    sns.countplot(x='grav', data=df_avprepro_se, palette='pastel')
+    plt.ylabel("Nombre d'accidents")
+    plt.xlabel("Gravité")
+    plt.xticks([0,1, 2, 3,4], ['Non renseigné', 'Indemne', "Tué", "Blessé hospitalisé", "Blessé léger"])
+    st.pyplot(plt)
+  elif option == "Après le préprocessing de gravité":
+    plt.figure(figsize=(8, 4))
+    sns.countplot(x='grav', data=df_apprepro_se, palette='pastel')
+    plt.ylabel("Nombre d'accidents")
+    plt.xticks([0,1], ['Accident sans gravité', "Accidents avec gravité"])
+
+    st.pyplot(plt)
+    
   st.write("Variables d'origines :", "1 – Indemne, 2 – Tué, 3 – Blessé hospitalisé, 4 – Blessé léger")
   st.write("Nouvelles variables  :", "1 – Accident sans gravité, 2 – Accident avec gravité")    
   
