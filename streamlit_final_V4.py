@@ -399,31 +399,50 @@ if page == pages[3] :
   st.markdown("<h2 style='text-align: center;'>Nombre de voies</h2>", unsafe_allow_html=True)
   df_avprepro_nbv = df_ana.copy()
   df_apprepro_nbv = df_model.copy()
+# <<<<<<< HEAD:streamlit_final_V4.py
  
-  # Ajouter des onglets
-  col1, col2 = st.tabs(["Données Avant le préprocessing", "Données après préprocessing"])
+#   # Ajouter des onglets
+#   col1, col2 = st.tabs(["Données Avant le préprocessing", "Données après préprocessing"])
 
-  # Première colonne avec case à cocher
-  with col1:
-      val_original = st.checkbox("Afficher les données originales", key = "av")
-      if val_original:
+#   # Première colonne avec case à cocher
+#   with col1:
+#       val_original = st.checkbox("Afficher les données originales", key = "av")
+#       if val_original:
     
-        plt.figure(figsize=(8, 4))
-        sns.countplot(x='nbv', data=df_avprepro_nbv, palette='pastel')
-        plt.ylabel("Nombre d'accidents")
-        plt.xlabel("Nombre de voies")
-        plt.xticks( rotation = 45)
-        st.pyplot(plt)
-  with col2 :
-    val_original = st.checkbox("Afficher les données après préprocessing", key = "ap")
-    if val_original:
-        plt.figure(figsize=(8, 4))
-        sns.countplot(x='nbv', data=df_apprepro_nbv, palette='pastel')
-        plt.ylabel("Nombre d'accidents")
-        plt.xlabel("Nombre de voies")
-        st.pyplot(plt)
+#         plt.figure(figsize=(8, 4))
+#         sns.countplot(x='nbv', data=df_avprepro_nbv, palette='pastel')
+#         plt.ylabel("Nombre d'accidents")
+#         plt.xlabel("Nombre de voies")
+#         plt.xticks( rotation = 45)
+#         st.pyplot(plt)
+#   with col2 :
+#     val_original = st.checkbox("Afficher les données après préprocessing", key = "ap")
+#     if val_original:
+#         plt.figure(figsize=(8, 4))
+#         sns.countplot(x='nbv', data=df_apprepro_nbv, palette='pastel')
+#         plt.ylabel("Nombre d'accidents")
+#         plt.xlabel("Nombre de voies")
+#         st.pyplot(plt)
 
-                                #########################################
+#                                 #########################################
+# =======
+  option = st.selectbox(
+    "Choisissez la distribution :",
+    ('Avant le préprocessing', 'Après le préprocessing')
+      )
+  if option == 'Avant le préprocessing':
+    plt.figure(figsize=(8, 4))
+    sns.countplot(x='nbv', data=df_avprepro_nbv, palette='pastel')
+    plt.ylabel("Nombre d'accidents")
+    plt.xlabel("Nombre de voies")
+    st.pyplot(plt)
+  elif option == 'Après le préprocessing':
+    plt.figure(figsize=(8, 4))
+    sns.countplot(x='nbv', data=df_apprepro_nbv, palette='pastel')
+    plt.ylabel("Nombre d'accidents")
+    plt.xlabel("Nombre de voies")
+    st.pyplot(plt)
+# >>>>>>> main:streamlit.py
   st.write("-------------")
   st.write("##### Département et commune")
   
