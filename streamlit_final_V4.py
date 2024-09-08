@@ -664,7 +664,7 @@ if page == pages[4] :
   y_test = df_test.grav
   
   models = {
-    "model random forest" : joblib.load('models_saved/rf_model.joblib'),
+    "model random forest" : joblib.load('Brouillons/rf_model.joblib'),
     "model extra trees classifier" : joblib.load('Brouillons/extra_tree_classifier_model.joblib'),
     "model xgbc" : joblib.load('models_saved/GBClassifier_model.joblib'),
     "model lgbm" : joblib.load('models_saved/LGBMClassifier_model.joblib')#,
