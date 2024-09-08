@@ -9,7 +9,7 @@ import seaborn as sns
 import joblib
 from sklearn.metrics import confusion_matrix,ConfusionMatrixDisplay,classification_report, f1_score, accuracy_score#, recall_score, precision_score
 from sklearn.preprocessing import StandardScaler
-#import graphviz
+import graphviz
 
 # librairie pour afficher toutes les colonnes du dataframe
 pd.set_option('display.max_columns', None)
