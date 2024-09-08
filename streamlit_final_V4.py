@@ -677,6 +677,11 @@ if page == pages[4] :
     X_train_scaled = scaler.fit_transform(X_train)
     X_test_scaled = scaler.transform(X_test)
     y_pred = model.predict(X_test_scaled)
+  elif selected_model == "model extra trees classifier":
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
+    y_pred = model.predict(X_test_scaled)
   else:
    y_pred = model.predict(X_test)
 
