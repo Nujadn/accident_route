@@ -395,118 +395,73 @@ if page == pages[3] :
   if st.checkbox("Afficher les valeurs manquantes") :
     st.dataframe(missing_values_table(df_ana) )
  
-  st.write("#### Transformation des variables :")  
-  st.markdown("<h2 style='text-align: center;'>Nombre de voies</h2>", unsafe_allow_html=True)
-  df_avprepro_nbv = df_ana.copy()
-  df_apprepro_nbv = df_model.copy()
-# <<<<<<< HEAD:streamlit_final_V4.py
- 
-#   # Ajouter des onglets
-#   col1, col2 = st.tabs(["Données Avant le préprocessing", "Données après préprocessing"])
+ ####
+  st.markdown("<h2 style='text-align: center;'>Transformation des variables</h2>", unsafe_allow_html=True)
 
-#   # Première colonne avec case à cocher
-#   with col1:
-#       val_original = st.checkbox("Afficher les données originales", key = "av")
-#       if val_original:
-    
-#         plt.figure(figsize=(8, 4))
-#         sns.countplot(x='nbv', data=df_avprepro_nbv, palette='pastel')
-#         plt.ylabel("Nombre d'accidents")
-#         plt.xlabel("Nombre de voies")
-#         plt.xticks( rotation = 45)
-#         st.pyplot(plt)
-#   with col2 :
-#     val_original = st.checkbox("Afficher les données après préprocessing", key = "ap")
-#     if val_original:
-#         plt.figure(figsize=(8, 4))
-#         sns.countplot(x='nbv', data=df_apprepro_nbv, palette='pastel')
-#         plt.ylabel("Nombre d'accidents")
-#         plt.xlabel("Nombre de voies")
-#         st.pyplot(plt)
-
-#                                 #########################################
-# =======
-  option = st.selectbox(
-    "Choisissez la distribution :",
-    ('Avant le préprocessing', 'Après le préprocessing')
-      )
-  if option == 'Avant le préprocessing':
+  st.write("##### Nombre de voies")
+  tab1, tab2 = st.tabs(["Données originales", "Données après remplacement"])
+  with tab1:
+    df_avprepro_nbv = df_ana.copy()
     plt.figure(figsize=(8, 4))
     sns.countplot(x='nbv', data=df_avprepro_nbv, palette='pastel')
     plt.ylabel("Nombre d'accidents")
     plt.xlabel("Nombre de voies")
+    plt.xticks( rotation = 45)
     st.pyplot(plt)
-  elif option == 'Après le préprocessing':
+  
+  with tab2:
+    df_apprepro_nbv = df_model.copy()
     plt.figure(figsize=(8, 4))
     sns.countplot(x='nbv', data=df_apprepro_nbv, palette='pastel')
     plt.ylabel("Nombre d'accidents")
     plt.xlabel("Nombre de voies")
     st.pyplot(plt)
-# >>>>>>> main:streamlit.py
+
+                                 #########################################
+
+
   st.write("-------------")
-  st.write("##### Département et commune")
-  
-  st.markdown("<h2 style='text-align: center;'>Département</h2>", unsafe_allow_html=True)
+  st.write("##### Département")
  
   col1, col2 = st.columns(2)
-  
-
-  # Ajouter des onglets
   col1, col2 = st.tabs(["Données originales", "Données après modifications"])
-  
-  # Première colonne avec case à cocher
   with col1:
-      val_original = st.checkbox("Afficher les données originales")
-      if val_original:
           df_dep = df_ana.loc[(df_ana['dep'] == '2A') | (df_ana['dep'] == '2B')]
           st.write(df_dep['dep'].unique())
-          
-
-# Deuxième colonne avec case à cocher
   with col2:
-      val_replaced = st.checkbox("Afficher les données après remplacement")
-      if val_replaced:
           df_dep['dep'] = df_dep['dep'].str.replace('2A', '20')
           df_dep['dep'] = df_dep['dep'].str.replace('2B', '20')
           st.write(df_dep['dep'].unique())
           
-
-
-  st.markdown("<h2 style='text-align: center;'>Commune</h2>", unsafe_allow_html=True)
+  st.write("-------------")
+  st.write("##### Commune")
+  
   tab1, tab2 = st.tabs(["Données originales", "Données après remplacement"])
- 
   with tab1 :
-    val_original = st.checkbox("Afficher les données avant remplacement", key = "original")
-    if val_original:
       df_dep = df_ana.loc[(df_ana['dep'] == '2A') | (df_ana['dep'] == '2B')]
       df_com = df_dep.copy()
       st.write(df_com['com'].unique())
 
   with tab2 :
-    val_replaced = st.checkbox("Afficher les données après remplacement", key ="replaced")
-    if val_replaced:
       df_com = df_dep.copy()
       df_com['com'] = df_com['com'].str.replace('B', '0')
       df_com['com'] = df_com['com'].str.replace('A', '0')
       df_com['com'] = df_com['com'].str.replace('N/C', '14061')
       st.write(df_com['com'].unique())
+      
+  st.write("-------------")
 
-
+  st.markdown("<h2 style='text-align: center;'>Création de nouvelles variables</h2>", unsafe_allow_html=True)
     
-  st.write("####  Création de nouvelles variables")
-  st.markdown("<h2 style='text-align: center;'>Création d'une tranche horaire</h2>", unsafe_allow_html=True)
+  st.write("#####  Création d'une tranche horaire")
 
   col1, col2 = st.tabs(["Variable originale", "Nouvelle variable"])
   df_h = df_ana.copy()
   with col1 :
-    val_original = st.checkbox("Variable originale", key = "orig")
-    if val_original:
       df_h = df_ana.copy()
       st.write(df_h['hrmn'].unique())
   
   with col2 :
-    val_replaced = st.checkbox("nouvelle variable", key ="repl")
-    if val_replaced:
       df_h = df_ana.copy()
       sepa_values = [value.split(':') for value in df_h["hrmn"] ]
       df_h["heure"] = [value[0] for value in sepa_values]
@@ -519,8 +474,10 @@ if page == pages[3] :
   st.markdown("""
        Tranche horaire : 1 à 5 heures = 1, 5 à 7 heures = 2, 7 à 10 heures = 3, 10 à 13 heures = 4, 13 à 16 heures = 5, 16 à 19 heures = 6, 19 à 24 heures = 7     
                """)
+ 
                                         ##################################
-  st.markdown("<h2 style='text-align: center;'>Création d'une tranche d'âge</h2>", unsafe_allow_html=True)
+  st.write("-------------")
+  st.write("##### Création d'une tranche d'âge")
 
   df_avprepro_age = df_ana.copy()
   df_avprepro_age['age'] = df_avprepro_age['an'] - df_avprepro_age['an_nais']
@@ -528,8 +485,6 @@ if page == pages[3] :
 
   tab1, tab2 = st.tabs(["Données originales", "Nouvelles variables"])
   with tab1 :
-    val_original = st.checkbox("Variables originales", key = "ori")
-    if val_original:
       plt.figure(figsize=(8, 4))
       sns.countplot(x='age', data=df_avprepro_age, palette='pastel')
       plt.ylabel("Nombre d'accidents")
@@ -537,8 +492,6 @@ if page == pages[3] :
       st.pyplot(plt)
    
   with tab2 :
-    val_replaced = st.checkbox("Nouvelle tranche d'âge", key = "rep")
-    if val_replaced:
       df_age = df_ana.copy()
       plt.figure(figsize=(14, 8))
       sns.countplot(x='age_group', data=df_apprepro_age, palette='pastel')
@@ -550,26 +503,23 @@ if page == pages[3] :
       
  
                                             #####################################
-    st.write("####  Regroupement de variables :")                                       
-
-  st.markdown("<h2 style='text-align: center;'>Mode de déplacement</h2>", unsafe_allow_html=True)
+  st.write("-------------")
+  st.markdown("<h2 style='text-align: center;'>Regroupement de variables</h2>", unsafe_allow_html=True)
+  
+  st.write("##### Mode de déplacement")                                       
   df_avprepro_mdp = df_ana.copy()
   df_apprepro_mdp = df_model.copy()
   
     
-  col1, col2 = st.columns(2)
-  with col1 :
-    val_or = st.checkbox("Avant le préprocessing", key = "or")
-    if val_or:
+  tab1, tab2 = st.tabs(["Données originales", "Nouvelles variables"])
+  with tab1 :
       plt.figure(figsize=(8, 4))
       sns.countplot(x='catv', data=df_avprepro_mdp, palette='pastel')
       plt.ylabel("Nombre d'accidents")
       plt.xlabel("Mode de déplacement")
       st.pyplot(plt)
       
-  with col2 :   
-      val_re = st.checkbox(" Après le préprocessing", key="re")
-      if val_re:
+  with tab2 :   
         plt.figure(figsize=(8, 4))
         sns.countplot(x='catv', data=df_apprepro_mdp, palette='pastel')
         plt.ylabel("Nombre d'accidents")
@@ -578,10 +528,10 @@ if page == pages[3] :
         st.pyplot(plt)
 
                                                 ###########################
+  st.write("-------------")
+  st.markdown("<h2 style='text-align: center;'>Systèmes de sécurité</h2>", unsafe_allow_html=True)
 
-  st.markdown("<h2 style='text-align: center;'>Equipements de sécurité</h2>", unsafe_allow_html=True)
-
-  st.write("##### Systèmes de sécurité") 
+  st.write("##### Equipements de sécurité") 
 
   fig = plt.figure(figsize=(5,5))
   df_avprepro_se = df_ana.copy()
@@ -589,8 +539,6 @@ if page == pages[3] :
 
   tab1, tab2 = st.tabs(["Variables originales", "Nouvelles variables"])
   with tab1 :
-    Syst_av = st.checkbox("Variables originales", key = "Sys")
-    if Syst_av:
       plt.figure(figsize=(8, 4))
       sns.countplot(x='secu1', data=df_avprepro_se, palette='pastel')
       plt.ylabel("Nombre d'accidents")
@@ -598,8 +546,6 @@ if page == pages[3] :
       st.pyplot(plt)
      
   with tab2 :
-    Syst_ap = st.checkbox("Nouvelles variables", key = "Syst")
-    if Syst_ap:
       plt.figure(figsize=(8, 4))
       sns.countplot(x='secu1', data=df_apprepro_se, palette='pastel')
       plt.ylabel("Nombre d'accidents")
@@ -608,7 +554,7 @@ if page == pages[3] :
       st.pyplot(plt)
 
                                       ####################################
-
+  st.write("-------------")
   st.markdown("<h2 style='text-align: center;'>Variable Cible : Gravité</h2>", unsafe_allow_html=True)
     
   df_avprepro_se = df_ana.copy()
@@ -617,8 +563,6 @@ if page == pages[3] :
   tab1, tab2 = st.tabs(["Données originales", "Données après regroupement"])
   
   with tab1 :
-   grav_o= st.checkbox("Variables d'origines", key = "Gravité_val_ori")
-   if grav_o:
     plt.figure(figsize=(8, 4))
     sns.countplot(x='grav', data=df_avprepro_se, palette='pastel')
     plt.ylabel("Nombre d'accidents")
@@ -627,8 +571,6 @@ if page == pages[3] :
     st.pyplot(plt)
      
   with tab2 :
-    grav_rg = st.checkbox("Nouvelles variables", key = "Gravité_val_rg")
-    if grav_rg:
       plt.figure(figsize=(8, 4))
       sns.countplot(x='grav', data=df_apprepro_se, palette='pastel')
       plt.ylabel("Nombre d'accidents")
@@ -641,12 +583,12 @@ if page == pages[3] :
   
   st.write("#### Suppression des variables") 
   
-  if st.checkbox("Variable Supprimées"):
-    df_mqt = pd.DataFrame({
+
+  df_mqt = pd.DataFrame({
     'Variables': ['dep', 'mois', "heure, minute", "jour, date_obj","an_nais, age","an", "lartpc, occutc, v2", "id_accident, id_vehicule, id_usager"],
     'Raison': ['doublon avec les variables lat et long', 'doublon avec weekday','doublon avec tranche horaire', "doublon avec weekday",'doublon avec tranche âge', "année de l'accident", "90 % de manquants", "variables qui a servi à faire la liaison"]
       })
-    st.table(df_mqt)
+  st.table(df_mqt)
 
   st.write("#### DataFrame Final")
   if st.checkbox("Afficher le dataframe final") :
