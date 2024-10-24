@@ -3,3 +3,5 @@ models_saved/KNeighborsClassifier_model.joblib filter=lfs diff=lfs merge=lfs -te
 models_saved/LGBMClassifier_model.joblib filter=lfs diff=lfs merge=lfs -text
 models_saved/best_estimator_ada_model.joblib filter=lfs diff=lfs merge=lfs -text
 models_saved/extra_tree_classifier_model.joblib filter=lfs diff=lfs merge=lfs -text
+models_saved/rf_model.joblib filter=lfs diff=lfs merge=lfs -text
+
